@@ -1,0 +1,46 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "1. Start Flask Backend",
+      "type": "shell",
+      "command": "python backend/run.py",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "servers"
+      }
+    },
+    {
+      "label": "2. Start React Frontend (Vite)",
+      "type": "shell",
+      "command": "cd frontend; npm run dev",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "servers"
+      }
+    },
+    {
+      "label": "3. Run Automated Tests (test_api.py)",
+      "type": "shell",
+      "command": "python test_api.py",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "4. Docker: Spin Up All Containers",
+      "type": "shell",
+      "command": "docker-compose up --build",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always"
+      }
+    }
+  ]
+}

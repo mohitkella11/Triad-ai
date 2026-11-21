@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  # 1. MongoDB Database with GridFS Support
+  mongodb:
+    image: mongo:6.0
+    container_name: triad_dms_mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: triad_dms
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - dms_network
+
+  # 2. Python Flask REST API Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: triad_dms_backend
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - MONGO_URI=mongodb://mongodb:27017/triad_dms
+      - DB_NAME=triad_dms
+      - JWT_SECRET=triad-ai-dms-super-secret-key-2026
+      - FLASK_ENV=production
+    depends_on:
+      - mongodb
+    networks:
+      - dms_network
+
+  # 3. Modern React Frontend Dashboard
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: triad_dms_frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - dms_network
+
+volumes:
+  mongo_data:
+
+networks:
+  dms_network:
+    driver: bridge
